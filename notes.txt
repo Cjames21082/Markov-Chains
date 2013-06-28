@@ -1,10 +1,10 @@
-text = [....]
+text = [some string]
 tuple_size = 5
 first_key = []
 
 for i in range(tuple_size):
 	word = text.pop(0)
-	first_key.append(word)
+	first_key.append(word)			# this is a list
 
 key = tuple(first_key)
 
