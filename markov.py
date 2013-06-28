@@ -3,6 +3,7 @@
 # 6.27.13
 
 import sys
+import random
 
 
 def make_chains(corpus):
@@ -16,53 +17,63 @@ def make_chains(corpus):
 
 
     length_of_wordlist = range(len(words)-2) 
-    #r is a list = [0,1,2]. we subtract 2 because the last pair has no match
+    #r is a list of positions = [0,1,2]. we subtract 2 because the last pair has no match
 
 
-    d_chain = {}  #this is our empty chains dictionary
+    chains = {}  #this is our empty chains dictionary
 
     for i in length_of_wordlist:
         key = (words[i], words[i +1])  #key is pairs of words in text
         value = words[i +2]            # value is the next word that follows the key
         
-        if d_chain.get(key, None):
-            d_chain[key].append(value)       
+        if chains.get(key, None):
+            chains[key].append(value)    # if key exist do smthg, else return None which make stmt false and go to else stmt
         else:
-            d_chain[key] = [value]
+            chains[key] = [value]       # add a new key, value  pair
 
-    #print d_chain
-
-    return d_chain
+    return chains
 
 def make_text(chains):
     """Takes a dictionary of markov chains and returns random text
     based off an original text."""
-    return "Here's some random text."
+                                            
 
-# def main():
-#     args = sys.argv             # input is make_chains(corpus)
+    text_list = []                        # this is a list
 
-#     # Change this to read input_text from a file
-#     input_text = "Some text"
+    ##############this chooses a random key. Only once in the program
+    current_key = random.choice(chains.keys()) 
+    text_list.append(current_key[0])
+    text_list.append(current_key[1])
+   
+    ############################### below this line is the loop
 
-#     chain_dict = make_chains(input_text)
-#     random_text = make_text(chain_dict)
-#     print random_text
+    while chains.get(current_key, None):
+        len_value_list = len(chains[current_key])       # how many value exist for the current key
+        value_list = chains[current_key]                # list of all value for each key
+         
+        random_value = random.randint(0,len_value_list-1) # computation to pick a random item in value
+        
 
-# if __name__ == "__main__":
-#     main()
+        text_list.append(value_list[random_value])          # adding random value to list
+        
+
+        current_key = (current_key[1], value_list[random_value]) # reassign current key with new pair
+        
+
+    return " ".join(text_list)
 
 
-# s= """
-# I do not like them
-# in a house.
-# I do not like them
-# with a mouse.
-# I do not like them
-# here or there.
-# I do not like them
-# anywhere.
+def main():
+    args = sys.argv             # args is the list (markov.py, inputfile)
 
-# """
+    input_text = open(args[1]).read()    #args[1] is the name of the inputfile.
+                                        # we open the input file, read it into a string called input_file
 
-# make_chains(s)
+    chain_dict = make_chains(input_text)
+    random_text = make_text(chain_dict)
+    print random_text
+
+if __name__ == "__main__":
+    main()
+
+
