@@ -6,7 +6,7 @@ import sys
 import random
 
 
-def make_chains(corpus):
+def make_chains(corpus): #n is the n-gram of the markov chain
     """Takes an input text as a string and returns a dictionary of
     markov chains."""
     # start with a string = corpus

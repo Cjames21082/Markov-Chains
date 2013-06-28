@@ -1,0 +1,19 @@
+text = [....]
+tuple_size = 5
+first_key = []
+
+for i in range(tuple_size):
+	word = text.pop(0)
+	first_key.append(word)
+
+key = tuple(first_key)
+
+d = {}
+while text:
+	val = text.pop(0)
+	if d.get(key):
+		d[key].append(val)
+	else:
+		d[key] = [val]
+
+	key = key[1:] + (val,)
